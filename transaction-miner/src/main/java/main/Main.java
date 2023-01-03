@@ -41,7 +41,6 @@ public class Main {
             startBlock = new BigInteger(args[3]);
             endBlock = new BigInteger(args[4]);
             if(method.equalsIgnoreCase("websocket")) {
-                System.out.println("connect to webscoket");
                 client = Client.connectWebsocket(node);
             } else if (method.equalsIgnoreCase("http")) {
                 client = Client.connectHttp(node);

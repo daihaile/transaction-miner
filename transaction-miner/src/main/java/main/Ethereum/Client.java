@@ -216,7 +216,6 @@ public class Client implements EthereumClient {
             String hash = tx.getHash();
             params.remove(0);
             params.add(0, hash);
-            System.out.println(params);
             CompletableFuture<Response> res = null;
             Response result = null;
             if(this.wsService != null && this.service == null) {
