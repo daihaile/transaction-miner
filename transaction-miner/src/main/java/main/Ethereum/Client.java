@@ -192,7 +192,7 @@ public class Client implements EthereumClient {
     }
 
     public ArrayList<TransactionTrace> getAllTransactionTraces(ArrayList<EthereumTransaction> txList) throws URISyntaxException, InterruptedException, IOException, ExecutionException {
-        FileWriter writer = new FileWriter(new File("output", "traces.csv"), false);
+        FileWriter writer = new FileWriter( "traces.csv", false);
         writer.write("txHash,from,to,value,from0,to0,value0,from1,to1,value1,from2,to2,value2,from3,to3,value3,from4,to4,value4\n");
 
         ArrayList<TransactionTrace> traceList = new ArrayList<TransactionTrace>();
@@ -380,7 +380,7 @@ public class Client implements EthereumClient {
     }
 
     public boolean writeCSV (ArrayList<TransactionTrace> traceList, String filename) throws IOException {
-        FileWriter writer = new FileWriter(new File("output", filename + ".csv"), false);
+        FileWriter writer = new FileWriter( filename + ".csv", false);
         writer.write("txHash,from,to,value,from0,to0,value0,from1,to1,value1,from2,to2,value2,from3,to3,value3,from4,to4,value4\n");
         for (TransactionTrace trace : traceList) {
             StringBuilder sb = new StringBuilder();

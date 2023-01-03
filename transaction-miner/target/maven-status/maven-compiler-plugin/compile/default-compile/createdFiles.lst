@@ -1,0 +1,12 @@
+main/Ethereum/TransactionCall.class
+main/Ethereum/ManifestReader.class
+main/Ethereum/EthereumLogEntry.class
+main/Ethereum/EthereumBlock.class
+main/Ethereum/TransactionTrace.class
+main/Ethereum/Web3jTransaction.class
+main/Ethereum/Web3jBlock.class
+main/Ethereum/Client.class
+main/Main.class
+main/Ethereum/EthereumTransaction.class
+main/Ethereum/EthereumClient.class
+main/Ethereum/DataReader.class

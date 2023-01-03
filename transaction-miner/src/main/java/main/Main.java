@@ -20,6 +20,9 @@ public class Main {
         String filepath, node, contractAddress, method;
         BigInteger startBlock, endBlock;
         Client client = null;
+        for (String arg : args) {
+            System.out.println(arg);
+        }
         if (args.length == 0) {
             LOGGER.log(Level.SEVERE, "No arguments given");
             return;
@@ -31,22 +34,25 @@ public class Main {
             startBlock = mr.getStartBlock();
             endBlock = mr.getEndBlock();
             client = Client.connectWebsocket(node);
-        } else if (args.length == 4 ) {
+        } else if (args.length == 5 ) {
             method = args[0];
             node = args[1];
             contractAddress = args[2];
             startBlock = new BigInteger(args[3]);
             endBlock = new BigInteger(args[4]);
-            if(method == "websocket") {
+            if(method.equalsIgnoreCase("websocket")) {
+                System.out.println("connect to webscoket");
                 client = Client.connectWebsocket(node);
-            } else if (method == "http") {
+            } else if (method.equalsIgnoreCase("http")) {
                 client = Client.connectHttp(node);
-            } else if( method == "ipc"){
+            } else if( method.equalsIgnoreCase("ipc")){
                 client = Client.connectIpc(node);
             }
         } else {
+            System.out.println("bad arguments");
             return;
         }
+        System.out.println(client);
         ArrayList<EthereumTransaction> txList = getAllTransactions(client, startBlock, endBlock, contractAddress);
         try {
 
@@ -70,7 +76,7 @@ public class Main {
         BigInteger currentBlockNumber = blockStart;
         EthereumBlock block;
         ArrayList<EthereumTransaction> txList = new ArrayList<>();
-        FileWriter writer = new FileWriter(new File("output", "transactions.csv"),false);
+        FileWriter writer = new FileWriter("transactions.csv",false);
         while(currentBlockNumber.compareTo(blockNumberEnd) < 1) {
             block = client.queryBlockData(currentBlockNumber);
             if(block.transactionCount() > 0) {
