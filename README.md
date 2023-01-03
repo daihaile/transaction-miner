@@ -13,9 +13,9 @@ To run this project use the compiled jar file
 cd target
 java -jar transaction-miner-1.0-SNAPSHOT-jar-with-dependencies.jar <mode> <node> <contractAddress> <startblock> <endblock>
 ```
-with
-mode: 	websocket | ipc | http
-node: 		url of ipc file or url to websocket/http
+with\
+mode: 	websocket | ipc | http\
+node: 		url of ipc file or url to websocket/http\
 
 examples:
 ```bash
