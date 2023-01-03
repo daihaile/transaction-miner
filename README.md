@@ -1,6 +1,8 @@
 
 # transaction-miner
 
+This project is based on the Blockchain Logging Framework. https://github.com/TU-ADSP/Blockchain-Logging-Framework
+
 To build this project run
 ```bash
  cd transaction-miner
