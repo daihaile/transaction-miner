@@ -1,0 +1,154 @@
+// Author: Dai Hai Le
+SET BLOCKCHAIN "Ethereum";
+
+SET OUTPUT FOLDER "./output";
+SET CONNECTION "ws://localhost:8549/";
+
+// tm_contract=0xBC0A50d62A07B8392F89216d58f958d1D119D94A
+// tm_blocks=557,644
+
+address gambleContract = 0xBC0A50d62A07B8392F89216d58f958d1D119D94A;
+
+boolean globalOdd = false;
+BLOCKS (557) (644) {
+    LOG ENTRIES (0xBC0A50d62A07B8392F89216d58f958d1D119D94A) (
+      GambleStart(uint id, address sender)
+    ) {
+        EMIT XES TRACE ("gamble")(id) (
+            id as xs:int concept:name
+        );
+        EMIT XES EVENT ("gamble")(id)() (
+          "Gamble start" as xs:string concept:name,
+          block.timestamp as xs:date time:timestamp,
+          block.number as xs:int blockNumber,
+          tx.hash as xs:string txHash,
+          sender as xs:string sender
+        );
+    }
+
+    LOG ENTRIES (0xBC0A50d62A07B8392F89216d58f958d1D119D94A) (
+    GambleRed(
+      uint id,
+      bool odd,
+      address sender,
+      uint value
+      )
+    ){
+      EMIT XES EVENT ("gamble")(id)() (
+        "Gamble with red" as xs:string concept:name,
+        block.timestamp as xs:date time:timestamp,
+        sender as xs:string sender,
+        value as xs:int value
+      );
+    }
+
+    LOG ENTRIES (0xBC0A50d62A07B8392F89216d58f958d1D119D94A) (
+    GambleBlack(
+      uint id,
+      bool odd,
+      address sender,
+      uint value
+      )
+    ){
+      EMIT XES EVENT ("gamble")(id)() (
+        "Gamble with black" as xs:string concept:name,
+        block.timestamp as xs:date time:timestamp,
+        sender as xs:string sender,
+        value as xs:int value
+      );
+    }
+
+    LOG ENTRIES (0x7E4DE055454d47Bb06f310b4B16076dC6eAE83c9) (
+    CalculateGamble(
+      uint id,
+      bool isRed,
+      bool odd,
+      uint lastTimestamp,
+      uint256 newValue
+      )
+    ){
+      globalOdd = odd;
+      IF (isRed == true) {
+        EMIT XES EVENT ("gamble")(id)() (
+        "Gamble calculated" as xs:string concept:name,
+        "red" as xs:string color,
+        newValue as xs:int calculatedValue,
+        lastTimestamp as xs:date time:timestamp
+        );
+      }
+      IF (isRed == false) {
+        EMIT XES EVENT ("gamble")(id)() (
+        "Gamble calculated" as xs:string concept:name,
+        "black" as xs:string color,
+        newValue as xs:int calculatedValue,
+        lastTimestamp as xs:date time:timestamp
+        );
+      }
+    }
+
+    IF(globalOdd == true) {
+      LOG ENTRIES (0xBC0A50d62A07B8392F89216d58f958d1D119D94A) (
+      NewBalance(
+        uint id,
+        address addr,
+        uint newValue,
+        uint balance
+        )
+      ){
+        EMIT XES EVENT ("gamble")(id)() (
+          "Updated Balance" as xs:string concept:name,
+          addr as xs:string sender,
+          newValue as xs:int calculatedValue,
+          block.timestamp as xs:date time:timestamp,
+          balance as xs:int balance
+
+        );
+      }
+
+      LOG ENTRIES (0xBC0A50d62A07B8392F89216d58f958d1D119D94A) (
+      CollectWins(
+        uint id,
+        uint value
+        )
+      ){
+        EMIT XES EVENT ("gamble")(id)() (
+          "Collect wins" as xs:string concept:name,
+          block.timestamp as xs:date time:timestamp,
+          value as xs:int value
+        );
+      }
+    }
+
+    IF(globalOdd == false) {
+      LOG ENTRIES (0xBC0A50d62A07B8392F89216d58f958d1D119D94A) (
+      CollectWins(
+        uint id,
+        uint value
+        )
+      ){
+        EMIT XES EVENT ("gamble")(id)() (
+          "Collect wins" as xs:string concept:name,
+          block.timestamp as xs:date time:timestamp,
+          value as xs:int value
+        );
+      }
+      LOG ENTRIES (0xBC0A50d62A07B8392F89216d58f958d1D119D94A) (
+      NewBalance(
+        uint id,
+        address addr,
+        uint newValue,
+        uint balance
+        )
+      ){
+        EMIT XES EVENT ("gamble")(id)() (
+          "Updated Balance" as xs:string concept:name,
+          addr as xs:string sender,
+          newValue as xs:int calculatedValue,
+          block.timestamp as xs:date time:timestamp,
+          balance as xs:int balance
+
+        );
+      }
+    }
+
+}
